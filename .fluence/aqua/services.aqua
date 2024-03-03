@@ -1,0 +1,12 @@
+aqua Services declares *
+
+
+data MountedBinaryResult:
+  ret_code: i32
+  error: string
+  stdout: []u8
+  stderr: []u8
+
+service HttpDemo("http_demo"):
+  strip_esc(s: string) -> string
+  url_test(url: string) -> MountedBinaryResult

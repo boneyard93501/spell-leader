@@ -1,0 +1,46 @@
+aqua CompExecutor
+
+-- Note: spell main function must be exported
+export spell
+
+import Spell from "@fluencelabs/spell/spell_service.aqua"
+
+use "deals.aqua"
+
+
+data IdxResult:
+  idx: i32
+  err: bool
+  stderr: string
+
+service Conversions("conv_id"):
+  my_idx(key: string, vals: []string) -> IdxResult
+
+service CompFunction("comp_func"):
+  greeting(worker_id: string) -> string  
+
+
+func spell():
+  -- check if this spell is the executor
+  deals <- Deals.get()
+  dealId = deals.myDeployment!.dealIdOriginal
+  on HOST_PEER_ID:
+    subnet <- Subnet.resolve(dealId)
+  
+  snets: *string
+  for s <- subnet:
+    
+
+
+  
+  pat_ids: *string
+
+  for w <- subnet.workers:
+    on w.worker_id! via w.host_id:
+
+
+
+
+  Spell "compExecutor"
+
+  Spell.store_log("Spell 'compExecutor' is working!")

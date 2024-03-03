@@ -1,0 +1,38 @@
+aqua CompExecutor
+
+-- Note: spell main function must be exported
+export spell
+
+import Spell from "@fluencelabs/spell/spell_service.aqua"
+import "@fluencelabs/aqua-lib/subnet.aqua"
+import "@fluencelabs/aqua-lib/builtin.aqua"
+
+use "deals.aqua"
+
+
+data IdxResult:
+  idx: i32
+  err: bool
+  stderr: string
+
+service Conversions("conversions"):
+  my_idx(key: string, vals: []string) -> IdxResult
+
+service CompFunction("comp_function"):
+  greeting(worker_id: string) -> string  
+
+
+func spell():
+  Spell "worker-spell"
+  res <- Spell.get_string("deal_id")
+  dealId = res.value
+  Spell.store_log(dealId)
+  
+    -- on HOST_PEER_ID:
+    --   subnet <- Subnet.resolve(dealId)
+
+    -- Spell "compExecutor"
+
+    --Conversions
+    --res <- Op.join("Spell 'compExecutor' is working! with deal id", dealId)
+    --Spell.store_log("Spell 'compExecutor' is working!")
