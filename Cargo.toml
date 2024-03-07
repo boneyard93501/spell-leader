@@ -1,6 +1,6 @@
 [workspace]
 members = [
   "src/services/http_demo/modules/http_demo",
-  "src/services/http_demo/modules/conversions",
-  "src/services/http_demo/modules/comp_function"
+  "src/modules/leader_election",
+  "src/modules/comp_function"
 ]
