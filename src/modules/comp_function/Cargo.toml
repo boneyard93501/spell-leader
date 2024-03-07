@@ -1,0 +1,14 @@
+[package]
+name = "comp_function"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "comp_function"
+path = "src/main.rs"
+
+[dependencies]
+marine-rs-sdk = "0.10.1"
+
+[dev-dependencies]
+marine-rs-sdk-test = "0.12.0"
