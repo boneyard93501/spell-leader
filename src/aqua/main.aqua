@@ -18,24 +18,33 @@ export runDeployedServices, showSubnet
 -- DOCUMENTATION:
 -- https://fluence.dev
 
-        
 
-func url_test() -> SubnetResolveResult, string:
+
+func get_worker_detail(subnet: SubnetResolveResult) -> string, []string:
+    workers = subnet.workers
+    my_host_id = HOST_PEER_ID
+    my_worker_id: *string
+    worker_ids: *string
+    for w <- workers:
+        worker_ids <<- w.worker_id!
+        if w.host_id == my_host_id:
+            my_worker_id <<- w.worker_id!
+    <- my_worker_id!, worker_ids
+
+
+
+func url_test() -> string, []string:
     deals <- Deals.get()
     dealId = deals.myDeployment!.dealIdOriginal
 
     on HOST_PEER_ID:
         subnet <- Subnet.resolve(dealId)
-    <- subnet, HOST_PEER_ID
-    -- res <- HttpDemo.url_test("https://fluence.one")
     
-    -- <- res
+    my_worker_id, worker_ids <-  get_worker_detail(subnet)
 
-
-
-
--- -- example of running services deployed using `fluence deploy`
--- -- with worker 'myDeployment' which has service 'MyService' with method 'greeting'
+    <- my_worker_id, worker_ids
+    
+ 
 
 
 

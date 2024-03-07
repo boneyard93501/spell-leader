@@ -19,7 +19,7 @@ pub fn url_test(url:String) -> MountedBinaryResult {
 }
 
 #[marine]
-#[module_import ("curl_adapter")]
+#[module_import ("curl_effector")]
 extern "C" {
     pub fn curl_request(cmd: Vec<String>) -> MountedBinaryResult;
 }

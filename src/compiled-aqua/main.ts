@@ -112,16 +112,16 @@ export const showSubnet_script = `
                    (seq
                     (seq
                      (seq
-                      (ap ("chainNetwork" "dar") %Deal_obj_map)
-                      (ap ("chainNetworkId" 3525067388221321) %Deal_obj_map)
+                      (ap ("chainNetwork" "local") %Deal_obj_map)
+                      (ap ("chainNetworkId" 31337) %Deal_obj_map)
                      )
-                     (ap ("dealId" "eac6cebe689cc1bc1800a261f06ae238449fe986") %Deal_obj_map)
+                     (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
                     )
-                    (ap ("dealIdOriginal" "0xEac6cebe689cC1BC1800a261f06AE238449FE986") %Deal_obj_map)
+                    (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
                    )
-                   (ap ("definition" "bafkreihucnuyhciskreilferfdy3mrguky74lgw3icjatxxtvynhf556b4") %Deal_obj_map)
+                   (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
                   )
-                  (ap ("timestamp" "2024-03-03T18:01:36.189Z") %Deal_obj_map)
+                  (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
                  )
                  (canon %init_peer_id% %Deal_obj_map  Deal_obj)
                 )
@@ -624,16 +624,16 @@ export const runDeployedServices_script = `
                    (seq
                     (seq
                      (seq
-                      (ap ("chainNetwork" "dar") %Deal_obj_map)
-                      (ap ("chainNetworkId" 3525067388221321) %Deal_obj_map)
+                      (ap ("chainNetwork" "local") %Deal_obj_map)
+                      (ap ("chainNetworkId" 31337) %Deal_obj_map)
                      )
-                     (ap ("dealId" "eac6cebe689cc1bc1800a261f06ae238449fe986") %Deal_obj_map)
+                     (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
                     )
-                    (ap ("dealIdOriginal" "0xEac6cebe689cC1BC1800a261f06AE238449FE986") %Deal_obj_map)
+                    (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
                    )
-                   (ap ("definition" "bafkreihucnuyhciskreilferfdy3mrguky74lgw3icjatxxtvynhf556b4") %Deal_obj_map)
+                   (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
                   )
-                  (ap ("timestamp" "2024-03-03T18:01:36.189Z") %Deal_obj_map)
+                  (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
                  )
                  (canon %init_peer_id% %Deal_obj_map  Deal_obj)
                 )
@@ -714,8 +714,8 @@ export const runDeployedServices_script = `
               (ap :error: -if-error-)
               (xor
                (match :error:.$.error_code 10001
-                (new $pat_id
-                 (xor
+                (xor
+                 (seq
                   (seq
                    (seq
                     (seq
@@ -723,97 +723,76 @@ export const runDeployedServices_script = `
                       (seq
                        (seq
                         (seq
-                         (seq
-                          (seq
-                           (new $-ephemeral-stream-
-                            (new #-ephemeral-canon-
-                             (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
-                            )
-                           )
-                           (new $-ephemeral-stream-
-                            (new #-ephemeral-canon-
-                             (canon w-0.$.host_id $-ephemeral-stream-  #-ephemeral-canon-)
-                            )
-                           )
-                          )
-                          (call w-0.$.worker_id.[0] ("worker-spell" "get_string") ["worker-spell"] ret-0)
-                         )
-                         (call w-0.$.worker_id.[0] ("http_demo" "strip_esc") [ret-0.$.value] ret-1)
-                        )
-                        (call w-0.$.worker_id.[0] ("subnet" "resolve") [ret-1] ret-2)
-                       )
-                       (fold ret-2.$.workers s-1
-                        (seq
-                         (new -if-error-
-                          (xor
-                           (match s-1.$.worker_id.[0] w-0.$.worker_id.[0]
-                            (ap s-1.$.pat_id $pat_id)
-                           )
-                           (seq
-                            (ap :error: -if-error-)
-                            (xor
-                             (match :error:.$.error_code 10001
-                              (null)
-                             )
-                             (fail -if-error-)
-                            )
-                           )
+                         (new $-ephemeral-stream-
+                          (new #-ephemeral-canon-
+                           (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
                           )
                          )
-                         (next s-1)
+                         (new $-ephemeral-stream-
+                          (new #-ephemeral-canon-
+                           (canon w-0.$.host_id $-ephemeral-stream-  #-ephemeral-canon-)
+                          )
+                         )
                         )
-                        (null)
+                        (call w-0.$.worker_id.[0] ("worker-spell" "get_string") ["deal_id"] ret-0)
                        )
+                       (call w-0.$.worker_id.[0] ("http_demo" "strip_esc") [ret-0.$.value] ret-1)
                       )
-                      (new %Answer_obj-0_map
+                      (new $option-inline-1
                        (seq
-                        (seq
-                         (seq
-                          (canon w-0.$.worker_id.[0] $pat_id  #pat_id_canon)
-                          (ap ("answer" #pat_id_canon) %Answer_obj-0_map)
-                         )
-                         (ap ("worker" w-0) %Answer_obj-0_map)
+                        (xor
+                         (ap ret-0.$.value $option-inline-1)
+                         (null)
                         )
-                        (canon w-0.$.worker_id.[0] %Answer_obj-0_map  Answer_obj-0)
+                        (canon w-0.$.worker_id.[0] $option-inline-1  #option-inline-1-0)
                        )
                       )
                      )
-                     (ap Answer_obj-0 $answers)
+                     (new %Answer_obj-0_map
+                      (seq
+                       (seq
+                        (ap ("answer" #option-inline-1-0) %Answer_obj-0_map)
+                        (ap ("worker" w-0) %Answer_obj-0_map)
+                       )
+                       (canon w-0.$.worker_id.[0] %Answer_obj-0_map  Answer_obj-0)
+                      )
+                     )
                     )
+                    (ap Answer_obj-0 $answers)
+                   )
+                   (new $-ephemeral-stream-
+                    (new #-ephemeral-canon-
+                     (canon w-0.$.host_id $-ephemeral-stream-  #-ephemeral-canon-)
+                    )
+                   )
+                  )
+                  (new $-ephemeral-stream-
+                   (new #-ephemeral-canon-
+                    (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
+                   )
+                  )
+                 )
+                 (seq
+                  (seq
+                   (seq
                     (new $-ephemeral-stream-
                      (new #-ephemeral-canon-
                       (canon w-0.$.host_id $-ephemeral-stream-  #-ephemeral-canon-)
                      )
                     )
+                    (new $-ephemeral-stream-
+                     (new #-ephemeral-canon-
+                      (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
+                     )
+                    )
                    )
                    (new $-ephemeral-stream-
                     (new #-ephemeral-canon-
-                     (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
+                     (canon %init_peer_id% $-ephemeral-stream-  #-ephemeral-canon-)
                     )
                    )
                   )
-                  (seq
-                   (seq
-                    (seq
-                     (new $-ephemeral-stream-
-                      (new #-ephemeral-canon-
-                       (canon w-0.$.host_id $-ephemeral-stream-  #-ephemeral-canon-)
-                      )
-                     )
-                     (new $-ephemeral-stream-
-                      (new #-ephemeral-canon-
-                       (canon -relay- $-ephemeral-stream-  #-ephemeral-canon-)
-                      )
-                     )
-                    )
-                    (new $-ephemeral-stream-
-                     (new #-ephemeral-canon-
-                      (canon %init_peer_id% $-ephemeral-stream-  #-ephemeral-canon-)
-                     )
-                    )
-                   )
-                   (fail :error:)
-                  )
+                  (fail :error:)
                  )
                 )
                )
@@ -992,63 +971,128 @@ export const url_test_script = `
     (seq
      (seq
       (seq
-       (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-       (new $option-inline
-        (seq
+       (seq
+        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+        (new $option-inline
          (seq
-          (new %Deal_obj_map
-           (seq
+          (seq
+           (new %Deal_obj_map
             (seq
              (seq
               (seq
                (seq
                 (seq
-                 (ap ("chainNetwork" "dar") %Deal_obj_map)
-                 (ap ("chainNetworkId" 3525067388221321) %Deal_obj_map)
+                 (seq
+                  (ap ("chainNetwork" "local") %Deal_obj_map)
+                  (ap ("chainNetworkId" 31337) %Deal_obj_map)
+                 )
+                 (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
                 )
-                (ap ("dealId" "eac6cebe689cc1bc1800a261f06ae238449fe986") %Deal_obj_map)
+                (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
                )
-               (ap ("dealIdOriginal" "0xEac6cebe689cC1BC1800a261f06AE238449FE986") %Deal_obj_map)
+               (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
               )
-              (ap ("definition" "bafkreihucnuyhciskreilferfdy3mrguky74lgw3icjatxxtvynhf556b4") %Deal_obj_map)
+              (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
              )
-             (ap ("timestamp" "2024-03-03T18:01:36.189Z") %Deal_obj_map)
+             (canon %init_peer_id% %Deal_obj_map  Deal_obj)
             )
-            (canon %init_peer_id% %Deal_obj_map  Deal_obj)
+           )
+           (xor
+            (ap Deal_obj $option-inline)
+            (null)
            )
           )
-          (xor
-           (ap Deal_obj $option-inline)
-           (null)
-          )
+          (canon %init_peer_id% $option-inline  #option-inline-0)
          )
-         (canon %init_peer_id% $option-inline  #option-inline-0)
+        )
+       )
+       (new %Deals_obj_map
+        (seq
+         (ap ("myDeployment" #option-inline-0) %Deals_obj_map)
+         (canon %init_peer_id% %Deals_obj_map  Deals_obj)
         )
        )
       )
-      (new %Deals_obj_map
-       (seq
-        (ap ("myDeployment" #option-inline-0) %Deals_obj_map)
-        (canon %init_peer_id% %Deals_obj_map  Deals_obj)
-       )
-      )
+      (ap Deals_obj.$.myDeployment Deals_obj_flat)
      )
-     (ap Deals_obj.$.myDeployment Deals_obj_flat)
+     (ap Deals_obj_flat.$.[0].dealIdOriginal Deals_obj_flat_flat)
     )
-    (ap Deals_obj_flat.$.[0].dealIdOriginal Deals_obj_flat_flat)
+    (xor
+     (call -relay- ("subnet" "resolve") [Deals_obj_flat_flat] ret)
+     (fail :error:)
+    )
    )
-   (xor
-    (call -relay- ("subnet" "resolve") [Deals_obj_flat_flat] ret)
-    (fail :error:)
+   (new $worker_ids-0
+    (new $my_worker_id-0
+     (seq
+      (seq
+       (seq
+        (seq
+         (ap ret.$.workers ret_flat)
+         (fold ret_flat w-0
+          (seq
+           (seq
+            (ap w-0.$.worker_id.[0] $worker_ids-0)
+            (new -if-error-
+             (xor
+              (match w-0.$.host_id -relay-
+               (ap w-0.$.worker_id.[0] $my_worker_id-0)
+              )
+              (seq
+               (ap :error: -if-error-)
+               (xor
+                (match :error:.$.error_code 10001
+                 (null)
+                )
+                (fail -if-error-)
+               )
+              )
+             )
+            )
+           )
+           (next w-0)
+          )
+          (null)
+         )
+        )
+        (new $my_worker_id-0_test
+         (seq
+          (seq
+           (fold $my_worker_id-0 my_worker_id-0_fold_var
+            (seq
+             (seq
+              (ap my_worker_id-0_fold_var $my_worker_id-0_test)
+              (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_iter_canon)
+             )
+             (xor
+              (match #my_worker_id-0_iter_canon.length 1
+               (null)
+              )
+              (next my_worker_id-0_fold_var)
+             )
+            )
+            (never)
+           )
+           (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_result_canon)
+          )
+          (ap #my_worker_id-0_result_canon my_worker_id-0_gate)
+         )
+        )
+       )
+       (canon %init_peer_id% $worker_ids-0  #-worker_ids-fix-0)
+      )
+      (ap #-worker_ids-fix-0 -worker_ids-flat-0)
+     )
+    )
    )
   )
-  (call %init_peer_id% ("callbackSrv" "response") [ret -relay-])
+  (call %init_peer_id% ("callbackSrv" "response") [my_worker_id-0_gate.$.[0] -worker_ids-flat-0])
  )
  (call %init_peer_id% ("errorHandlingSrv" "error") [:error: 0])
 )
 `;
 
-export type Url_testResultType = [{ error: string | null; success: boolean; workers: { host_id: string; pat_id: string; worker_id: string | null; }[]; }, string]
+export type Url_testResultType = [string, string[]]
 
 export type Url_testParams = [config?: {ttl?: number}] | [peer: IFluenceClient$$, config?: {ttl?: number}];
 
@@ -1067,49 +1111,15 @@ export function url_test(...args: Url_testParams): Url_testResult {
         "codomain": {
             "items": [
                 {
-                    "name": "SubnetResolveResult",
-                    "fields": {
-                        "error": {
-                            "type": {
-                                "name": "string",
-                                "tag": "scalar"
-                            },
-                            "tag": "option"
-                        },
-                        "success": {
-                            "name": "bool",
-                            "tag": "scalar"
-                        },
-                        "workers": {
-                            "type": {
-                                "name": "Worker",
-                                "fields": {
-                                    "host_id": {
-                                        "name": "string",
-                                        "tag": "scalar"
-                                    },
-                                    "pat_id": {
-                                        "name": "string",
-                                        "tag": "scalar"
-                                    },
-                                    "worker_id": {
-                                        "type": {
-                                            "name": "string",
-                                            "tag": "scalar"
-                                        },
-                                        "tag": "option"
-                                    }
-                                },
-                                "tag": "struct"
-                            },
-                            "tag": "array"
-                        }
-                    },
-                    "tag": "struct"
-                },
-                {
                     "name": "string",
                     "tag": "scalar"
+                },
+                {
+                    "type": {
+                        "name": "string",
+                        "tag": "scalar"
+                    },
+                    "tag": "array"
                 }
             ],
             "tag": "unlabeledProduct"

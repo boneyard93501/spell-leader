@@ -11,9 +11,9 @@ name: http_demo
 modules:
   facade:
     get: modules/http_demo
-  curl_adapter:
-    get: modules/curl_adapter
-  conversions:
-    get: modules/conversions
+  curl_effector:
+    get: ../../modules/curl_effector
+  leader_election:
+    get: ../../modules/leader_election
   comp_function:
-    get: modules/comp_function
+    get: ../../modules/comp_function
