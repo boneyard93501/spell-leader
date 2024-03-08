@@ -11,16 +11,14 @@ import Deals from "deals"
 
 -- IMPORTANT: Add exports for all functions that you want to run
 export helloWorld, helloWorldRemote, getInfo, getInfos
-export url_test
+export idx_test
 export runDeployedServices, showSubnet
 -- export deal_ranker
 
 -- DOCUMENTATION:
 -- https://fluence.dev
 
-
-
-func get_worker_detail(subnet: SubnetResolveResult) -> string, []string:
+func get_worker_detail(subnet: SubnetResolveResult) -> string, string, []string:
     workers = subnet.workers
     my_host_id = HOST_PEER_ID
     my_worker_id: *string
@@ -29,24 +27,30 @@ func get_worker_detail(subnet: SubnetResolveResult) -> string, []string:
         worker_ids <<- w.worker_id!
         if w.host_id == my_host_id:
             my_worker_id <<- w.worker_id!
-    <- my_worker_id!, worker_ids
+    <- my_worker_id!,my_host_id, worker_ids
 
 
-
-func url_test() -> string, []string:
+func idx_test() -> string, []string, IdxResult, bool:
+-- func idx_test() -> []IdxResult:
     deals <- Deals.get()
     dealId = deals.myDeployment!.dealIdOriginal
 
     on HOST_PEER_ID:
         subnet <- Subnet.resolve(dealId)
     
-    my_worker_id, worker_ids <-  get_worker_detail(subnet)
+    my_worker_id, my_host_id, worker_ids <- get_worker_detail(subnet)
+    res: *IdxResult
+    -- on HOST_PEER_ID:
+    -- on INIT_PEER_ID:
+    on my_worker_id via HOST_PEER_ID:
+        res <- HttpDemo.leader_idx(my_worker_id, worker_ids, false)
 
-    <- my_worker_id, worker_ids
-    
- 
-
-
+    leader: *bool
+    if res!.err ==false && res!.idx==0:
+        leader <<- true
+    else:
+        leader <<- false
+    <-  my_worker_id, worker_ids, res!, leader!
 
 data Answer:
     answer: ?string

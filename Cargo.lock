@@ -1075,6 +1075,7 @@ dependencies = [
 name = "leader_election"
 version = "0.1.0"
 dependencies = [
+ "hex",
  "marine-rs-sdk 0.14.0",
  "marine-rs-sdk-test 0.16.1",
 ]

@@ -115,13 +115,13 @@ export const showSubnet_script = `
                       (ap ("chainNetwork" "local") %Deal_obj_map)
                       (ap ("chainNetworkId" 31337) %Deal_obj_map)
                      )
-                     (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
+                     (ap ("dealId" "541dfe503202b78c5d78facd6cdb0a04d4b35634") %Deal_obj_map)
                     )
-                    (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
+                    (ap ("dealIdOriginal" "0x541Dfe503202b78c5d78FaCd6CDB0a04D4b35634") %Deal_obj_map)
                    )
-                   (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
+                   (ap ("definition" "bafkreifq667v7xuqq2vsxe4z23xgdghp2srxwd7mahkl2debftatpqq2ua") %Deal_obj_map)
                   )
-                  (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
+                  (ap ("timestamp" "2024-03-08T00:09:11.682Z") %Deal_obj_map)
                  )
                  (canon %init_peer_id% %Deal_obj_map  Deal_obj)
                 )
@@ -627,13 +627,13 @@ export const runDeployedServices_script = `
                       (ap ("chainNetwork" "local") %Deal_obj_map)
                       (ap ("chainNetworkId" 31337) %Deal_obj_map)
                      )
-                     (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
+                     (ap ("dealId" "541dfe503202b78c5d78facd6cdb0a04d4b35634") %Deal_obj_map)
                     )
-                    (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
+                    (ap ("dealIdOriginal" "0x541Dfe503202b78c5d78FaCd6CDB0a04D4b35634") %Deal_obj_map)
                    )
-                   (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
+                   (ap ("definition" "bafkreifq667v7xuqq2vsxe4z23xgdghp2srxwd7mahkl2debftatpqq2ua") %Deal_obj_map)
                   )
-                  (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
+                  (ap ("timestamp" "2024-03-08T00:09:11.682Z") %Deal_obj_map)
                  )
                  (canon %init_peer_id% %Deal_obj_map  Deal_obj)
                 )
@@ -963,125 +963,136 @@ export function helloWorld(...args: HelloWorldParams): HelloWorldResult {
     );
 }
 
-export const url_test_script = `
+export const idx_test_script = `
 (xor
  (seq
   (seq
-   (seq
+   (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+   (new $res
     (seq
      (seq
       (seq
        (seq
-        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-        (new $option-inline
+        (seq
          (seq
-          (seq
-           (new %Deal_obj_map
+          (new $option-inline
+           (seq
             (seq
-             (seq
+             (new %Deal_obj_map
               (seq
                (seq
                 (seq
                  (seq
-                  (ap ("chainNetwork" "local") %Deal_obj_map)
-                  (ap ("chainNetworkId" 31337) %Deal_obj_map)
+                  (seq
+                   (seq
+                    (ap ("chainNetwork" "local") %Deal_obj_map)
+                    (ap ("chainNetworkId" 31337) %Deal_obj_map)
+                   )
+                   (ap ("dealId" "541dfe503202b78c5d78facd6cdb0a04d4b35634") %Deal_obj_map)
+                  )
+                  (ap ("dealIdOriginal" "0x541Dfe503202b78c5d78FaCd6CDB0a04D4b35634") %Deal_obj_map)
                  )
-                 (ap ("dealId" "ce85503de9399d4deca3c0b2bb3e9e7cfcbf9c6b") %Deal_obj_map)
+                 (ap ("definition" "bafkreifq667v7xuqq2vsxe4z23xgdghp2srxwd7mahkl2debftatpqq2ua") %Deal_obj_map)
                 )
-                (ap ("dealIdOriginal" "0xCe85503De9399D4dECa3c0b2bb3e9e7CFCBf9C6B") %Deal_obj_map)
+                (ap ("timestamp" "2024-03-08T00:09:11.682Z") %Deal_obj_map)
                )
-               (ap ("definition" "bafkreiby3qhawwg3eavrnnoiix5polb46ozwbvkki3omncc6b6jdzdnhou") %Deal_obj_map)
+               (canon %init_peer_id% %Deal_obj_map  Deal_obj)
               )
-              (ap ("timestamp" "2024-03-05T14:52:04.799Z") %Deal_obj_map)
              )
-             (canon %init_peer_id% %Deal_obj_map  Deal_obj)
+             (xor
+              (ap Deal_obj $option-inline)
+              (null)
+             )
             )
-           )
-           (xor
-            (ap Deal_obj $option-inline)
-            (null)
+            (canon %init_peer_id% $option-inline  #option-inline-0)
            )
           )
-          (canon %init_peer_id% $option-inline  #option-inline-0)
+          (new %Deals_obj_map
+           (seq
+            (ap ("myDeployment" #option-inline-0) %Deals_obj_map)
+            (canon %init_peer_id% %Deals_obj_map  Deals_obj)
+           )
+          )
          )
+         (ap Deals_obj.$.myDeployment Deals_obj_flat)
         )
+        (ap Deals_obj_flat.$.[0].dealIdOriginal Deals_obj_flat_flat)
        )
-       (new %Deals_obj_map
-        (seq
-         (ap ("myDeployment" #option-inline-0) %Deals_obj_map)
-         (canon %init_peer_id% %Deals_obj_map  Deals_obj)
-        )
+       (xor
+        (call -relay- ("subnet" "resolve") [Deals_obj_flat_flat] ret)
+        (fail :error:)
        )
       )
-      (ap Deals_obj.$.myDeployment Deals_obj_flat)
-     )
-     (ap Deals_obj_flat.$.[0].dealIdOriginal Deals_obj_flat_flat)
-    )
-    (xor
-     (call -relay- ("subnet" "resolve") [Deals_obj_flat_flat] ret)
-     (fail :error:)
-    )
-   )
-   (new $worker_ids-0
-    (new $my_worker_id-0
-     (seq
-      (seq
-       (seq
+      (new $worker_ids-0
+       (new $my_worker_id-0
         (seq
-         (ap ret.$.workers ret_flat)
-         (fold ret_flat w-0
-          (seq
-           (seq
-            (ap w-0.$.worker_id.[0] $worker_ids-0)
-            (new -if-error-
-             (xor
-              (match w-0.$.host_id -relay-
-               (ap w-0.$.worker_id.[0] $my_worker_id-0)
-              )
-              (seq
-               (ap :error: -if-error-)
-               (xor
-                (match :error:.$.error_code 10001
-                 (null)
-                )
-                (fail -if-error-)
-               )
-              )
-             )
-            )
-           )
-           (next w-0)
-          )
-          (null)
-         )
-        )
-        (new $my_worker_id-0_test
          (seq
           (seq
-           (fold $my_worker_id-0 my_worker_id-0_fold_var
+           (seq
+            (ap ret.$.workers ret_flat)
+            (fold ret_flat w-0
+             (seq
+              (seq
+               (ap w-0.$.worker_id.[0] $worker_ids-0)
+               (new -if-error-
+                (xor
+                 (match w-0.$.host_id -relay-
+                  (ap w-0.$.worker_id.[0] $my_worker_id-0)
+                 )
+                 (seq
+                  (ap :error: -if-error-)
+                  (xor
+                   (match :error:.$.error_code 10001
+                    (null)
+                   )
+                   (fail -if-error-)
+                  )
+                 )
+                )
+               )
+              )
+              (next w-0)
+             )
+             (null)
+            )
+           )
+           (new $my_worker_id-0_test
             (seq
              (seq
-              (ap my_worker_id-0_fold_var $my_worker_id-0_test)
-              (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_iter_canon)
-             )
-             (xor
-              (match #my_worker_id-0_iter_canon.length 1
-               (null)
+              (fold $my_worker_id-0 my_worker_id-0_fold_var
+               (seq
+                (seq
+                 (ap my_worker_id-0_fold_var $my_worker_id-0_test)
+                 (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_iter_canon)
+                )
+                (xor
+                 (match #my_worker_id-0_iter_canon.length 1
+                  (null)
+                 )
+                 (next my_worker_id-0_fold_var)
+                )
+               )
+               (never)
               )
-              (next my_worker_id-0_fold_var)
+              (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_result_canon)
              )
+             (ap #my_worker_id-0_result_canon my_worker_id-0_gate)
             )
-            (never)
            )
-           (canon %init_peer_id% $my_worker_id-0_test  #my_worker_id-0_result_canon)
           )
-          (ap #my_worker_id-0_result_canon my_worker_id-0_gate)
+          (canon %init_peer_id% $worker_ids-0  #-worker_ids-fix-0)
          )
+         (ap #-worker_ids-fix-0 -worker_ids-flat-0)
         )
        )
-       (canon %init_peer_id% $worker_ids-0  #-worker_ids-fix-0)
       )
-      (ap #-worker_ids-fix-0 -worker_ids-flat-0)
+     )
+     (xor
+      (seq
+       (call -relay- ("http_demo" "leader_idx") [my_worker_id-0_gate.$.[0] -worker_ids-flat-0 false] ret-0)
+       (ap ret-0 $res)
+      )
+      (fail :error:)
      )
     )
    )
@@ -1092,17 +1103,17 @@ export const url_test_script = `
 )
 `;
 
-export type Url_testResultType = [string, string[]]
+export type Idx_testResultType = [string, string[]]
 
-export type Url_testParams = [config?: {ttl?: number}] | [peer: IFluenceClient$$, config?: {ttl?: number}];
+export type Idx_testParams = [config?: {ttl?: number}] | [peer: IFluenceClient$$, config?: {ttl?: number}];
 
-export type Url_testResult = Promise<Url_testResultType>;
+export type Idx_testResult = Promise<Idx_testResultType>;
 
-export function url_test(...args: Url_testParams): Url_testResult {
+export function idx_test(...args: Idx_testParams): Idx_testResult {
     return callFunction$$(
         args,
         {
-    "functionName": "url_test",
+    "functionName": "idx_test",
     "arrow": {
         "domain": {
             "fields": {},
@@ -1136,7 +1147,7 @@ export function url_test(...args: Url_testParams): Url_testResult {
         "errorFnName": "error"
     }
 },
-        url_test_script
+        idx_test_script
     );
 }
 

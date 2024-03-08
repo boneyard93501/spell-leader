@@ -1,6 +1,11 @@
 aqua Services declares *
 
 
+data IdxResult:
+  idx: i32
+  err: bool
+  stderr: string
+
 data MountedBinaryResult:
   ret_code: i32
   error: string
@@ -8,5 +13,6 @@ data MountedBinaryResult:
   stderr: []u8
 
 service HttpDemo("http_demo"):
+  leader_idx(key: string, vals: []string, hex: bool) -> IdxResult
   strip_esc(s: string) -> string
   url_test(url: string) -> MountedBinaryResult

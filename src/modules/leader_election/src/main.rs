@@ -10,8 +10,6 @@ fn hex_string_to_int(h_str: &str) -> Result<u64, &'static str> {
     Ok(res)
 }
 
-
-
 fn get_index(key: u64, sorted_vals: Vec<u64>) -> Result<u32, &'static str> {
     let idx = sorted_vals.iter().position(|&k| k == key).unwrap();
     Ok(idx as u32)
@@ -27,12 +25,27 @@ fn rank_from_hex(key: &str, vals: Vec<&str>) -> Result<u32, &'static str> {
     while dupes {
         _vals.clear();
 
-        ref_key = hex_string_to_int(&key[2..cmp_len+OFFSET]).unwrap();
-
+        if &key[0..2] == "0x" {
+            ref_key = hex_string_to_int(&key[2..cmp_len+OFFSET]).unwrap();
+        }
+        else {
+            ref_key = hex_string_to_int(&key[0..cmp_len+OFFSET]).unwrap();
+        }
+        
+        /*
         for v in vals.iter() {
-            let _key = hex_string_to_int(&v[2..cmp_len+OFFSET]).unwrap();
+            let mut _key: u64;
+            if &v[0..2] == "0x" {
+                _key = hex_string_to_int(&v[2..cmp_len+OFFSET]).unwrap();
+            }
+            else {
+                _key = hex_string_to_int(&v[0..cmp_len+OFFSET]).unwrap();
+            }
             _vals.push(_key);
         }
+        */
+        _vals = vals.iter().map(|v| if &v[0..2] == "0x" {hex_string_to_int(&v[2..cmp_len+OFFSET]).unwrap()} else {hex_string_to_int(&v[0..cmp_len+OFFSET]).unwrap()}).collect::<Vec<u64>>();
+
 
         let n = _vals.len();
 
@@ -58,18 +71,29 @@ fn rank_from_peerid(key: &str, vals: Vec<&str>) -> Result<u32, &'static str> {
     let mut dupes = true;
     let mut cmp_len = LENGTH;
     let mut _vals: Vec<u64> = Vec::new();
+    
+
+    let hex_key = hex::encode(&key[4..std::cmp::min(32, key.len())]);
+    let mut hex_vals:Vec<String> = vals.iter().map(|v| hex::encode(&v[4..std::cmp::min(32, v.len())])).collect();
+
     let mut ref_key:u64 = 0u64;
-    let n = key.len();
+    let n = hex_key.len();
+
 
     while dupes {
         _vals.clear();
 
-        ref_key = hex_string_to_int(&key[n-cmp_len..n]).unwrap();
+        
+        ref_key = hex_string_to_int(&hex_key[n-cmp_len..n]).unwrap();
 
-        for v in vals.iter() {
+        /*
+        for v in hex_vals.iter() {
             let _key = hex_string_to_int(&v[n-cmp_len..n]).unwrap();
             _vals.push(_key);
         }
+         */
+
+        _vals = hex_vals.iter().map(|v| hex_string_to_int(&v[n-cmp_len..n]).unwrap()).collect();
 
         let vals_n = _vals.len();
         _vals.dedup();
